@@ -1,29 +1,40 @@
 import React, { Component } from 'react';
 import Header from '../header/header.js';
 import RandomChar from '../random-char/random-char.js';
-import ItemList from '../item-list/item-list.js';
-import CharDetails from '../char-details/char-details.js';
+import ErrorMessage from '../error-message/error-message.js'
+import CharacterPage from '../character-page/character-page.js';
 import './app.sass';
 
 export default class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hide: false
+			showRandomChar: true,
+			error: false
 		};
-		this.onHideRandomCharacter = this.onHideRandomCharacter.bind(this);
+		this.onShowRandomCharacter = this.onShowRandomCharacter.bind(this);
 	}
 
-	onHideRandomCharacter() {
-		this.setState(({hide}) => ({
-			hide: !hide
+	componentDidCatch() {
+		console.log("error");
+
+		this.setState({error: true});
+	}
+
+	onShowRandomCharacter() {
+		this.setState(({showRandomChar}) => ({
+			showRandomChar: !showRandomChar
 		}));
 	}
 	
 	render() {
-		const {hide} = this.state;
+		const {showRandomChar} = this.state;
 
-		const randomChar = !hide ? <RandomChar/> : null;
+		const randomChar = showRandomChar ? <RandomChar/> : null;
+
+		if(this.state.error) {
+			return <ErrorMessage />
+		}
 
 		return(
 			<div className="app">
@@ -34,17 +45,10 @@ export default class App extends Component {
           <div className="row">
             <div className="col-lg-5">
               {randomChar}
-              <button className="btn btn-outline-light btn-toggle" onClick={this.onHideRandomCharacter}>Toggle Random Character</button>
+              <button className="btn btn-outline-light btn-toggle" onClick={this.onShowRandomCharacter}>Toggle Random Character</button>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-6">
-              <ItemList />
-            </div>
-            <div className="col-md-6">
-              <CharDetails />
-            </div>
-          </div>
+					<CharacterPage />
       	</div>
     	</div>
 		)

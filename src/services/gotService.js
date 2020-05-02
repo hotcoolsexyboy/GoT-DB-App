@@ -53,7 +53,7 @@ export default class GOTService {
     return data;
   }
 
-  _transformCharacter(char) {
+  _transformCharacter = (char) => {
     const charData = {
       name: char.name,
       gender: char.gender,

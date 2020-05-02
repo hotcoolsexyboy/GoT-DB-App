@@ -14,7 +14,16 @@ export default class RandomChar extends Component {
       error: false
     };
     this.gotService = new GOTService();
+    this.updateChar = this.updateChar.bind(this);
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(this.updateChar, 3500);
     this.updateChar();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
   }
 
   updateChar() {
